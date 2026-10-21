@@ -1,168 +1,127 @@
-# AI PDF Chat
+# 📄 DocuMind AI — Chat with Your PDF 🤖
 
-An intelligent, offline-first PDF chatbot that lets you upload any PDF and ask natural language questions about its content. Powered by Retrieval-Augmented Generation (RAG) with a local LLM (Ollama) and FAISS vector search for fast, accurate answers with source citations.
+💡 **An AI-powered PDF question-answering application** that lets users upload PDF documents and ask questions about their content using natural language.
 
-![GitHub](https://img.shields.io/github/license/lifechangerapp/ai-pdf-chat)
-![Python](https://img.shields.io/badge/python-3.9%2B-blue)
-![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)
-![Ollama](https://img.shields.io/badge/Ollama-_LOCAL_LLM-green)
-![FAISS](https://img.shields.io/badge/FAISS-Vector_Search-orange)
+## 🌟 Overview
 
-## Features
+DocuMind AI uses **Retrieval-Augmented Generation (RAG)** to retrieve relevant information from uploaded PDFs and generate context-grounded answers using a locally running Large Language Model (LLM).
 
-- 📄 **PDF Upload** – Drag & drop or browse any PDF file
-- 💬 **AI Question Answering** – Ask questions in plain English
-- 🔍 **RAG Pipeline** – Combines retrieval and generation for grounded responses
-- 🦙 **Ollama Local LLM** – Runs Llama 3.2 (or other) entirely on your machine
-- 🗄️ **FAISS Vector Search** – Fast similarity search over document embeddings
-- 🧩 **Semantic Search** – Finds relevant chunks by meaning, not just keywords
-- 📑 **Page Number Sources** – Every answer includes exact page references
-- 🎨 **Clean Streamlit UI** – Modern, ChatGPT-inspired interface
-- 💾 **Offline AI Processing** – No internet required after model download
-- ⚡ **Fast Local Inference** – Optimized for low-latency responses
+## ✨ Features
 
-## Screenshots
+- 📤 **PDF Upload** — Upload a PDF document for analysis.
+- 💬 **Natural Language Q&A** — Ask questions about your document in plain English.
+- ✂️ **Text Chunking** — Split extracted text into smaller chunks for efficient retrieval.
+- 🧠 **Text Embeddings** — Convert document chunks into vector representations.
+- 🔎 **Semantic Search** — Find relevant passages using FAISS.
+- 🎯 **MMR Retrieval** — Retrieve relevant and diverse text chunks.
+- 🤖 **AI-Powered Answers** — Generate responses using Llama 3.2.
+- 📚 **Source References** — View retrieved passages and page numbers when available.
+- 🖥️ **Interactive Interface** — Chat with your PDF through Streamlit.
+- 🔒 **Local Model Inference** — Run the language model locally through Ollama.
 
-| Home Screen | PDF Upload |
-|-------------|------------|
-| ![Home](assets/home.png) | ![Upload](assets/upload.png) |
+## 🛠️ Tech Stack
 
-| Answer View | Sources Panel |
-|-------------|---------------|
-| ![Answer](assets/answer.png) | ![Sources](assets/sources.png) |
+| 🧰 Technology | 🎯 Purpose |
+|---|---|
+| 🐍 Python | Application logic |
+| 🎨 Streamlit | Interactive web interface |
+| 🔗 LangChain | LLM integration and retrieval pipeline |
+| 🦙 Ollama | Run language models locally |
+| 🤖 Llama 3.2 | Answer generation |
+| 🧠 Nomic Embed Text | Generate text embeddings |
+| 🔍 FAISS | Vector similarity search |
 
-*Replace placeholder images with actual screenshots in the `assets/` folder.*
+## ⚙️ How It Works
 
-## Architecture
+1. 📤 **Upload:** Select a PDF document.
+2. 📖 **Extract:** Read the text from the PDF.
+3. ✂️ **Chunk:** Divide the extracted text into smaller sections.
+4. 🧠 **Embed:** Generate vector embeddings using Nomic Embed Text.
+5. 🗄️ **Index:** Store the vectors in a FAISS vector store.
+6. 🔄 **Rewrite:** Normalize selected question terms using predefined substitutions.
+7. 🎯 **Retrieve:** Find relevant chunks using Maximal Marginal Relevance (MMR).
+8. 🤖 **Generate:** Pass the retrieved context to Llama 3.2.
+9. 📚 **Display:** Show the answer and relevant source passages.
 
-```mermaid
-flowchart LR
-    A([User])
-    B[Upload PDF]
-    C[Extract Text]
-    D[Split into Chunks]
-    E[Generate Embeddings]
-    F[(FAISS Vector Store)]
-    G[Retrieve Relevant Chunks]
-    H[Ollama LLM]
-    I([Answer])
+## 📂 Project Structure
 
-    A --> B
-    B --> C
-    C --> D
-    D --> E
-    E --> F
-    F --> G
-    G --> H
-    H --> I
+```text
+📁 documind-ai-rag/
+├── 🚀 app.py
+├── 🤖 chatbot.py
+├── 🧠 embeddings.py
+├── 📖 pdf_reader.py
+├── 🔄 query_rewriter.py
+├── ✂️ text_splitter.py
+├── 🔍 vector_store.py
+├── 📦 requirements.txt
+├── 📘 README.md
+└── 🖼️ assets/
 ```
 
-### Workflow
-1. **Upload** – User selects a PDF file via the Streamlit interface.
-2. **Extract** – Text is pulled from each page using PyPDF.
-3. **Chunk** – The raw text is split into overlapping segments for better context.
-4. **Embed** – Each chunk is converted into a vector using a sentence‑transformer model.
-5. **Store** – Vectors are indexed in a FAISS store for rapid similarity lookup.
-6. **Retrieve** – Upon a query, the top‑k most relevant chunks are fetched.
-7. **Generate** – The LLM (Ollama) receives the question + context and produces an answer.
-8. **Cite** – Sources are returned with page numbers so users can verify the information.
+## 📋 Prerequisites
 
-## Tech Stack
+- 🐍 Python 3.10 or a compatible version supported by the dependencies
+- 🦙 Ollama installed
+- 🔧 Git
 
-| Category       | Technology          | Purpose |
-|----------------|---------------------|---------|
-| **Language**   | Python 3.9+         | Core logic |
-| **Framework**  | Streamlit           | Interactive UI |
-| **LLM**        | Ollama (Llama 3.2)  | Local language model |
-| **Embeddings** | LangChain Ollama    | Text → vector |
-| **Vector Store**| FAISS               | Similarity search |
-| **PDF Parsing**| PyPDF               | Extract text from PDF |
-| **Orchestration**| LangChain         | RAG pipeline components |
-| **Version Control**| Git             | Source code management |
+## 🚀 Installation and Setup
 
-## Installation
-
-Follow these steps to run the project locally.
+### 1️⃣ Clone the repository
 
 ```bash
-# 1️⃣ Clone the repository
-git clone https://github.com/lifechangerapp/ai-pdf-chat.git
-cd ai-pdf-chat
+git clone YOUR_GITHUB_REPOSITORY_URL
+cd documind-ai-rag
+```
 
-# 2️⃣ Create a virtual environment
-python -m venv venv
-source venv/bin/activate   # Windows: venv\Scripts\activate
+### 2️⃣ Create a virtual environment
 
-# 3️⃣ Install Python dependencies
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### 3️⃣ Install dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-# 4️⃣ Install Ollama (https://ollama.com)
-#    Windows: Download installer from ollama.com
-#    macOS: brew install ollama
-#    Linux: curl -fsSL https://ollama.com/install.sh | sh
+### 4️⃣ Download the AI models
 
-# 5️⃣ Pull the LLM model (run after Ollama installation)
+```bash
 ollama pull llama3.2
+ollama pull nomic-embed-text
+```
 
-# 6️⃣ Launch the Streamlit app
+### 5️⃣ ▶️ Run the application
+
+Make sure Ollama is running, then execute:
+
+```bash
 streamlit run app.py
 ```
 
-## Usage
+🌐 Open the local URL displayed in your terminal, upload a PDF, and start chatting with your document!
 
-1. **Upload a PDF** – Click “Browse files” in the sidebar and select a PDF.
-2. **Wait for processing** – The app will extract text, create chunks, and build the vector store (status shown in sidebar).
-3. **Ask a question** – Type your question in the chat input at the bottom and press Enter.
-4. **View the answer** – The assistant’s response appears with a spinner while thinking.
-5. **Check sources** – Expand the “🔍 View Sources” section to see the relevant chunks and their page numbers.
+## 🔮 Future Improvements
 
-## Project Structure
+- 📚 Support multiple PDFs in a single session.
+- 🎯 Implement hybrid search and reranking.
+- 📥 Add downloadable chat transcripts.
+- 💾 Add persistent conversation history.
+- 📈 Improve retrieval accuracy and source citations.
+- ☁️ Deploy the application through an API or cloud platform.
 
-```
-ai-pdf-chat/
-├─ app.py                 # Main Streamlit UI (only UI modifications allowed)
-├─ chatbot.py             # LLM wrapper and question answering
-├─ pdf_reader.py          # PDF text extraction
-├─ text_splitter.py       # Chunking logic
-├─ embeddings.py          # Embedding generation
-├─ vector_store.py        # FAISS index creation/query
-├─ query_rewriter.py      # Optional query rewriting for better retrieval
-├─ requirements.txt       # Python dependencies
-├─ README.md              # This file
-└─ assets/                # Placeholder for screenshots
-```
+## 🎓 Learning Outcomes
 
-## Future Improvements
+- 🧩 Understanding Retrieval-Augmented Generation (RAG).
+- 🔍 Working with text embeddings and vector similarity search.
+- 🤖 Integrating local LLMs using Ollama.
+- 🔗 Building retrieval pipelines with LangChain.
+- 🎨 Developing interactive AI applications using Streamlit.
 
-- 📚 **Multiple PDF Support** – Chat across several documents simultaneously
-- 🕘 **Chat History** – Persist conversation across sessions
-- 🔎 **Better Retrieval** – Hybrid search (BM25 + vector) and reranking
-- 📤 **Export Chat** – Save conversation as Markdown or PDF
-- 📱 **Android Client** – Native mobile interface using Kotlin/Java
-- ⚡ **FastAPI Backend** – Decouple UI from core logic for scalability
-- ☁️ **Cloud Deployment** – Dockerize and deploy to AWS/GCP/Azure
-- 🎨 **Theme Customization** – Light/dark mode toggle and UI theming
+---
 
-## Contributing
+⭐ **If you find this project useful, consider giving the repository a star!**
 
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature/amazing-feature`).
-3. Commit your changes (`git commit -m "Add amazing feature"`).
-4. Push to the branch (`git push origin feature/amazing-feature`).
-5. Open a Pull Request.
-
-Please ensure your code adheres to the existing style and includes appropriate tests.
-
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-## Author
-
-**Balveer Singh**  
-GitHub: [@lifechangerapp](https://github.com/lifechangerapp)  
-Email: [lifechanger051@gmail.com](mailto:lifechanger051@gmail.com)  
-
-Feel free to reach out for collaborations, feedback, or job opportunities!
